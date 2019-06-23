@@ -57,12 +57,7 @@ public class CargoController {
 		attr.addFlashAttribute("success", "Registro atualizado com sucesso.");
 		return "redirect:/cargos/cadastrar";
 	}
-	
-	
-	
-	
-	
-	
+		
 	@ModelAttribute("departamentos")
 	public List<Departamento> listaDeDepartamentos() {
 		return departamentoService.buscarTodos();
