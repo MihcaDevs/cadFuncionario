@@ -3,16 +3,11 @@ package com.acosta.cad.func.web.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +31,7 @@ public class FuncionarioController {
 	private FuncionarioService funcionarioService;
 	@Autowired
 	private CargoService cargoService;
-	
-		
+
 	@GetMapping("/cadastrar")
 	public String cadastrar(Funcionario funcionario) {
 		return "/funcionario/cadastro";
@@ -50,12 +44,7 @@ public class FuncionarioController {
 	}
 	
 	@PostMapping("/salvar")
-	public String salvar(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attr) {
-		
-		if (result.hasErrors()) {
-			return "/funcionario/cadastro";
-		}
-		
+	public String salvar(Funcionario funcionario, RedirectAttributes attr) {
 		funcionarioService.salvar(funcionario);
 		attr.addFlashAttribute("success", "Funcionário inserido com sucesso.");
 		return "redirect:/funcionarios/cadastrar";
@@ -68,12 +57,7 @@ public class FuncionarioController {
 	}
 	
 	@PostMapping("/editar")
-	public String editar(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attr) {
-		
-		if (result.hasErrors()) {
-			return "/funcionario/cadastro";
-		}
-		
+	public String editar(Funcionario funcionario, RedirectAttributes attr) {
 		funcionarioService.editar(funcionario);
 		attr.addFlashAttribute("success", "Funcionário editado com sucesso.");
 		return "redirect:/funcionarios/cadastrar";
@@ -85,10 +69,14 @@ public class FuncionarioController {
 		attr.addFlashAttribute("success", "Funcionário removido com sucesso.");
 		return "redirect:/funcionarios/listar";
 	}	
-		
 	
-   
+	@GetMapping("/buscar/nome")
+	public String getPorNome(@RequestParam("nome") String nome, ModelMap model) {		
+		model.addAttribute("funcionarios", funcionarioService.buscarPorNome(nome));
+		return "/funcionario/lista";
+	}
 	
+
 	@ModelAttribute("cargos")
 	public List<Cargo> getCargos() {
 		return cargoService.buscarTodos();
