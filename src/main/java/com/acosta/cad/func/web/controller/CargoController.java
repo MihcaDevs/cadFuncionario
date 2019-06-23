@@ -68,7 +68,7 @@ public class CargoController {
 		}
 		return "redirect:/cargos/listar";
 	}
-		
+	
 	@ModelAttribute("departamentos")
 	public List<Departamento> listaDeDepartamentos() {
 		return departamentoService.buscarTodos();
