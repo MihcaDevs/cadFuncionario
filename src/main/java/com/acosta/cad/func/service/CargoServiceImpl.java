@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.acosta.cad.func.dao.CargoDao;
 import com.acosta.cad.func.domain.Cargo;
 
+
+
 @Service @Transactional(readOnly = false)
 public class CargoServiceImpl implements CargoService {
 	
@@ -42,4 +44,11 @@ public class CargoServiceImpl implements CargoService {
 		return dao.findAll();
 	}
 
+	@Override
+	public boolean cargoTemFuncionarios(Long id) {
+		if(buscarPorId(id).getFuncionarios().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 }
